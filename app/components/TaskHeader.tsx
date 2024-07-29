@@ -2,7 +2,6 @@
 import React from "react";
 import { Heading } from "./Heading";
 import { useModal } from "../Hooks/useModal";
-import { CustomModal } from "../Hoc/CustomModal";
 import { AddTaskForm } from "./AddTaskForm";
 
 export const TaskHeader = () => {
@@ -21,11 +20,8 @@ export const TaskHeader = () => {
         isSearchVisible
         isActionShow
       />
-      {isModalOpen ? (
-        <CustomModal>
-          <AddTaskForm handleModalOpen={handleModalOpen} />
-        </CustomModal>
-      ) : null}
+
+      {isModalOpen ? <AddTaskForm handleModalOpen={handleModalOpen} /> : null}
     </React.Fragment>
   );
 };
