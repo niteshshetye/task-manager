@@ -8,7 +8,7 @@ export const TaskHeader = () => {
   const { isModalOpen, handleModalOpen } = useModal();
 
   const handleAction = () => {
-    console.log("hi there");
+    // console.log("hi there");
     handleModalOpen(true);
   };
 

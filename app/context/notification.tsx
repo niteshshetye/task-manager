@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 import { Toaster } from "../components/Toaster";
 
 export type NotificationType = "error" | "success" | "warn";
@@ -36,21 +36,24 @@ export const NotificationProvider = ({
 }) => {
   const [notifications, setNotifications] = useState<INotification[]>([]);
 
-  const addNotification = (message: string, type: NotificationType) => {
-    setNotifications((prev): INotification[] => {
-      const updatedNotificationList = [
-        ...prev,
-        { message, type, id: `${type}-${Date.now()}` },
-      ];
+  const addNotification = useCallback(
+    (message: string, type: NotificationType) => {
+      setNotifications((prev): INotification[] => {
+        const updatedNotificationList = [
+          ...prev,
+          { message, type, id: `${type}-${Date.now()}` },
+        ];
 
-      return updatedNotificationList.slice(-3); // keep only latest 3 notification
-    });
+        return updatedNotificationList.slice(-3); // keep only latest 3 notification
+      });
 
-    // Remove notification after 3 seconds
-    setTimeout(() => {
-      setNotifications((prev) => prev.slice(1));
-    }, NOTIFICATION_DELAY); // Duration for each notification
-  };
+      // Remove notification after 3 seconds
+      setTimeout(() => {
+        setNotifications((prev) => prev.slice(1));
+      }, NOTIFICATION_DELAY); // Duration for each notification
+    },
+    []
+  );
 
   return (
     <NotificationContext.Provider value={{ notifications, addNotification }}>

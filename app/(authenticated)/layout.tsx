@@ -1,3 +1,5 @@
+"use client";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 
@@ -35,6 +37,12 @@ export default function AuthenticatedLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const handleSignout = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    await signOut({ callbackUrl: "/auth/signin" });
+  };
   return (
     <div>
       <button
@@ -78,6 +86,13 @@ export default function AuthenticatedLayout({
                 </Link>
               </li>
             ))}
+            <button
+              onClick={handleSignout}
+              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            >
+              <TempIcon />
+              <span className="ms-3">Sign Out</span>
+            </button>
           </ul>
         </div>
       </aside>

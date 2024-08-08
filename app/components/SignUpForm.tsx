@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { useNotification } from "../context/notification";
 import { signUp } from "../actions/signup";
+import { useRouter } from "next/navigation";
 
 interface ISignupForm {
   username: string;
@@ -51,6 +52,7 @@ const SignupFormReducer = (
 export const SignUpForm = () => {
   const [state, dispatch] = useReducer(SignupFormReducer, intialState);
   const { addNotification } = useNotification();
+  const router = useRouter();
 
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     const { value, name } = event.target;
@@ -78,6 +80,7 @@ export const SignUpForm = () => {
       });
 
       addNotification(response.message, response.isError ? "error" : "success");
+      router.push("/auth/signin");
     } catch (error) {
       addNotification("Something went wrong", "error");
     }
