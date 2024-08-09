@@ -2,7 +2,7 @@ import { TaskCard } from "@/app/components/TaskCard";
 import { TaskHeader } from "@/app/components/TaskHeader";
 import React from "react";
 
-export default function TodosPage() {
+export default async function TodosPage() {
   return (
     <React.Fragment>
       <TaskHeader />

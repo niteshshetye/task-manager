@@ -4,7 +4,10 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "../db";
 
 const genrateJWT = (option: any) => {
-  const token = jwt.sign(option, "fskdfsldfjsdklfjsdklfjsdkfsdjflskdf");
+  const token = jwt.sign(
+    option,
+    process.env.NEXT_PUBLIC_TOKEN_SECRET as string
+  );
   return token;
 };
 
@@ -55,11 +58,9 @@ export const authConfig = {
   secret: process.env.NEXTAUTH_SECRET || "secret",
   callbacks: {
     async jwt({ token, user }: any) {
-      // console.log("abc jwt: ", { token, user });
       return { ...token, ...user };
     },
     async session({ session, token }: any) {
-      // console.log("abc session: ", { token, session });
       session.user = token as any;
       return session;
     },
