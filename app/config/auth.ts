@@ -44,8 +44,9 @@ export const authConfig = {
             ? {
                 id: user.id,
                 name: user.name,
-                email: user.username || "",
+                email: user.username,
                 accessToken,
+                username: user.username,
               }
             : null;
         } catch (error) {
