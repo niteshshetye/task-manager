@@ -26,7 +26,6 @@ export const authConfig = {
               username: username,
             },
           });
-
           if (!user) return null;
 
           const passwordValidation = await bcrypt.compare(

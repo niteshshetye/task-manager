@@ -49,6 +49,13 @@ export const ProfileForm = ({
     event.preventDefault();
     event.stopPropagation();
 
+    if (!username.trim() || !email.trim() || !name.trim()) {
+      addNotification(
+        `${!name ? "Name" : !username ? "Username" : "Email"} is required`,
+        "error"
+      );
+    }
+
     try {
       const response = await onProfileUpdate({
         id: user?.id || "",

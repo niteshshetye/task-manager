@@ -1,14 +1,23 @@
-"use server";
 import bcrypt from "bcrypt";
-import { signIn } from "next-auth/react";
 import prisma from "../db";
 
-interface SignUpPayload {
+export interface SignUpActionPayload {
   username: string;
   password: string;
 }
 
-export const signUp = async (payload: SignUpPayload) => {
+export interface SignUpActionResponse {
+  message: string;
+  status: number;
+  isError: boolean;
+}
+
+export type ISignupAction = (
+  payload: SignUpActionPayload
+) => Promise<SignUpActionResponse>;
+
+export const signUp: ISignupAction = async (payload) => {
+  "use server";
   try {
     // check is user already present with the username
     const user = await prisma.user.findUnique({
@@ -33,12 +42,6 @@ export const signUp = async (payload: SignUpPayload) => {
       },
     });
 
-    await signIn("credentials", {
-      username: payload.username,
-      password: payload.password,
-      redirect: true,
-      callbackUrl: "/",
-    });
     // genrate the token and return to the set (for now naviagte to signin page)
     return { message: "User Created...!", status: 201, isError: false };
   } catch (error: any) {

@@ -6,8 +6,12 @@ import React, {
   useReducer,
 } from "react";
 import { useNotification } from "../context/notification";
-import { signUp } from "../actions/signup";
+import { ISignupAction } from "../actions/signup";
 import { useRouter } from "next/navigation";
+
+interface SignupFormProps {
+  onSignUp: ISignupAction;
+}
 
 interface ISignupForm {
   username: string;
@@ -49,7 +53,7 @@ const SignupFormReducer = (
   }
 };
 
-export const SignUpForm = () => {
+export const SignUpForm = ({ onSignUp }: SignupFormProps) => {
   const [state, dispatch] = useReducer(SignupFormReducer, intialState);
   const { addNotification } = useNotification();
   const router = useRouter();
@@ -74,7 +78,7 @@ export const SignUpForm = () => {
 
     // else call signUp action
     try {
-      const response = await signUp({
+      const response = await onSignUp({
         username: state.username,
         password: state.password,
       });
