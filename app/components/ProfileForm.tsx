@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useNotification } from "../context/notification";
-import { updateProfile } from "../actions/profile";
 
 interface User {
   id: string;
@@ -63,7 +62,6 @@ export const ProfileForm = ({
         username,
         email,
       });
-      console.log(response);
 
       addNotification(response.message, response.isError ? "error" : "success");
     } catch (error) {

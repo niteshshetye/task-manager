@@ -1,5 +1,4 @@
 "use server";
-
 import { getServerSession } from "next-auth";
 import { authConfig } from "../config/auth";
 import prisma from "../db";

@@ -1,11 +1,53 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { ModalHeader } from "./ModalHeader";
+import { ICreateTaskResponse, ICreateTaskPayload } from "../actions/task";
+import { useNotification } from "../context/notification";
 
 interface IAddTaskFormProps {
   handleModalOpen: (value: boolean) => void;
+  onAddTask: (payload: ICreateTaskPayload) => Promise<ICreateTaskResponse>;
 }
 
-export const AddTaskForm = ({ handleModalOpen }: IAddTaskFormProps) => {
+export const AddTaskForm = ({
+  handleModalOpen,
+  onAddTask,
+}: IAddTaskFormProps) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const { addNotification } = useNotification();
+
+  const onChangeForm =
+    (type: "title" | "description") =>
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { value } = event.target;
+
+      if (type === "title") {
+        setTitle(value);
+      }
+
+      if (type === "description") {
+        setDescription(value);
+      }
+    };
+
+  const handleAddButtonClick = async () => {
+    if (!title || !description) {
+      addNotification(
+        `${!title ? "Title" : "Description"} cannot be empty`,
+        "error"
+      );
+      return;
+    }
+    try {
+      const response = await onAddTask({ title, description });
+      console.log({ response });
+      handleCloseModal();
+    } catch (error) {
+      console.log("handle add button click: ", error);
+    }
+  };
+
   const handleCloseModal = () => {
     handleModalOpen(false);
   };
@@ -43,6 +85,8 @@ export const AddTaskForm = ({ handleModalOpen }: IAddTaskFormProps) => {
                     name="title"
                     type="text"
                     placeholder="Enter title"
+                    value={title}
+                    onChange={onChangeForm("title")}
                   />
                 </div>
                 <div className="mb-6">
@@ -57,6 +101,8 @@ export const AddTaskForm = ({ handleModalOpen }: IAddTaskFormProps) => {
                     id="description"
                     name="description"
                     placeholder="Enter description"
+                    value={description}
+                    onChange={onChangeForm("description")}
                   />
                 </div>
               </form>
@@ -68,7 +114,7 @@ export const AddTaskForm = ({ handleModalOpen }: IAddTaskFormProps) => {
             <button
               type="button"
               className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
-              onClick={handleCloseModal}
+              onClick={handleAddButtonClick}
             >
               Add Task
             </button>

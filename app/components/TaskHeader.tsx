@@ -3,8 +3,13 @@ import React from "react";
 import { Heading } from "./Heading";
 import { useModal } from "../Hooks/useModal";
 import { AddTaskForm } from "./AddTaskForm";
+import { ICreateTaskResponse, ICreateTaskPayload } from "../actions/task";
 
-export const TaskHeader = () => {
+interface ITaskHeaderProps {
+  onAddTask: (payload: ICreateTaskPayload) => Promise<ICreateTaskResponse>;
+}
+
+export const TaskHeader = ({ onAddTask }: ITaskHeaderProps) => {
   const { isModalOpen, handleModalOpen } = useModal();
 
   const handleAction = () => {
@@ -21,7 +26,9 @@ export const TaskHeader = () => {
         isActionShow
       />
 
-      {isModalOpen ? <AddTaskForm handleModalOpen={handleModalOpen} /> : null}
+      {isModalOpen ? (
+        <AddTaskForm onAddTask={onAddTask} handleModalOpen={handleModalOpen} />
+      ) : null}
     </React.Fragment>
   );
 };

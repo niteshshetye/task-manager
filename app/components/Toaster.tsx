@@ -12,7 +12,7 @@ export const Toaster = memo(function MemoizedToaster({
   notifications: INotification[];
 }) {
   return (
-    <TransitionGroup className="fixed top-4 right-4 space-y-2">
+    <TransitionGroup className="fixed top-4 right-4 space-y-2 z-20">
       {notifications.map((notification) => (
         <CSSTransition
           key={notification.id}
